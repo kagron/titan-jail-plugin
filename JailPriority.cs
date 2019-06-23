@@ -475,6 +475,8 @@ namespace ACT_Plugin
         List<String> order = new List<String>(); // List of TTS Callouts
         List<String> players = new List<String>(); // All players in priority list
         String regex = ":(.*)?:2B6(B|C):.*?:.*?:"; // regex for jails
+        
+        List<Int32> numbers = new List<Int32>(); // Numbers for TTS to call out
         int countMatches = 0;// number of matchups to the regex
         int yourIndex = 0;// player's index in the priority list
         System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
@@ -485,12 +487,14 @@ namespace ACT_Plugin
                 return;
             if (stopwatch.ElapsedMilliseconds > 1000)//if elapsed time since 1st matchup > 1 second. reset stopwatch
             {
-                logsTextBox.Text += "\r\n\r\n" + "=======[RESET]=======";
+                logsTextBox.AppendText("\r\n\r\n" + "=======[RESET]=======");
+                // logsTextBox.Text += "\r\n\r\n" + "=======[RESET]=======";
                 stopwatch.Reset();
                 countMatches = 0;
                 orderPlayers.Clear();
             }
-            logsTextBox.Text += "\r\n" + logInfo.logLine;
+            // logsTextBox.AppendText("\r\n" + logInfo.logLine);
+            // logsTextBox.Text += "\r\n" + logInfo.logLine;
             stopwatch.Start();
             for (int i = 0; i < players.Count; i++)
             {
@@ -503,7 +507,8 @@ namespace ACT_Plugin
                 return;
             if (countMatches != orderPlayers.Count)
             {
-                logsTextBox.Text += "\r\n" + "-[Incorrect name/s in priority list!]-";
+                logsTextBox.AppendText("\r\n" + "-[Incorrect name/s in priority list!]-");
+                // logsTextBox.Text += "\r\n" + "-[Incorrect name/s in priority list!]-";
                 return;
             }
             for (int i = 0; i < players.Count; i++)
@@ -512,16 +517,23 @@ namespace ACT_Plugin
                 {
                     if (players[i] == players[yourIndex])
                     {
-                        ActGlobals.oFormActMain.TTS(order[y]);
-                        logsTextBox.Text += "\r\n" + "---[" + (i + 1) + "]---[" + players[i] + "]------>-----" + order[y] + "---<--[YOU]";
+                        // ActGlobals.oFormActMain.TTS(order[y]);
+                        logsTextBox.AppendText("\r\n" + "---[" + (i + 1) + "]---[" + players[i] + "]------>-----" + order[y] + "---<--[YOU]");
+                        // logsTextBox.Text += "\r\n" + "---[" + (i + 1) + "]---[" + players[i] + "]------>-----" + order[y] + "---<--[YOU]";
                     }
                     else
                     {
-                        logsTextBox.Text += "\r\n" + "---[" + (i + 1) + "]---[" + players[i] + "]------>-----" + order[y] + "-------------";
+                        logsTextBox.AppendText("\r\n" + "---[" + (i + 1) + "]---[" + players[i] + "]------>-----" + order[y] + "-------------");
+                        // logsTextBox.Text += "\r\n" + "---[" + (i + 1) + "]---[" + players[i] + "]------>-----" + order[y] + "-------------";
                     }
+                    numbers.Add(i + 1);
                     y++;
                 }
             }
+            
+            string csv = String.Join(" ", numbers.Select(x => x.ToString()).ToArray());
+            ActGlobals.oFormActMain.TTS(csv);
+            numbers.Clear();
         }
         
     public void DeInitPlugin()
