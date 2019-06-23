@@ -78,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JailPriority.cs">
-      <SubType>UserControl</SubType>
+      <SubType>UserControl</SubType>/
     </Compile>
   </ItemGroup>
   <ItemGroup>

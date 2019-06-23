@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Xml;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Discord.Net;
 [assembly: AssemblyTitle("JailPriority Plugin")]
 [assembly: AssemblyVersion("1.0.0.3")]
 
@@ -730,6 +731,5 @@ namespace ACT_Plugin
                 order.Add(Order[i].Text);
             }
         }
-
     }
 }
